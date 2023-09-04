@@ -1,11 +1,17 @@
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode } from "react"
+import { Navbar } from "../common"
 
 type MainLayoutProps = {
   children: ReactNode
 }
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
-  return <div className="container">{children}</div>
+  return (
+    <div>
+      <Navbar />
+      {children}
+    </div>
+  )
 }
 
 export { MainLayout }

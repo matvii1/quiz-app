@@ -1,7 +1,7 @@
-'use client'
+"use client"
 
-import { SessionProvider as NextSessionProvider } from 'next-auth/react'
-import { FC } from 'react'
+import { SessionProvider as NextSessionProvider } from "next-auth/react"
+import { FC } from "react"
 
 type SessionProviderProps = {
   children: React.ReactNode
