@@ -7,14 +7,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  UserAvatar,
 } from "@/components/ui"
+import { PickedUser } from "@/types"
 import { LogOut } from "lucide-react"
-import { User } from "next-auth"
 import { signOut } from "next-auth/react"
 import { FC } from "react"
-import { UserAvatar } from "../../../ui"
-
-export type PickedUser = Pick<User, "image" | "name" | "email">
 
 type UserDropDownProps = {
   user: PickedUser

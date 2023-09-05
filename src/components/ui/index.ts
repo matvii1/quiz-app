@@ -1,4 +1,6 @@
 export * from "./button"
 export * from "./dropdown-menu"
-export * from "./userAvatar"
 export * from "./logo"
+export * from "./userAvatar"
+export * from "./title"
+export * from "./card"

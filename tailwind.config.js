@@ -51,6 +51,9 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      gridTemplateColumns: {
+        fluid: "repeat(auto-fit, minmax(18rem, 1fr))",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -73,4 +76,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-};
+}

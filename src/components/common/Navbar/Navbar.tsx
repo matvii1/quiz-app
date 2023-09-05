@@ -23,7 +23,7 @@ const Navbar: FC = async () => {
           </div>
         </div>
       </header>
-      <div className="pt-[5.9rem]"></div>
+      <div className="pt-[5.6rem]"></div>
     </>
   )
 }
