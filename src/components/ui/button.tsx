@@ -18,9 +18,12 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        link: "text-primary underline-offset-4 underline",
+        radioItem:
+          "xs:text-defualt gap-1 text-xs w-full cursor-pointer bg-secondary text-foreground hover:bg-slate-200 hover:text-accent-foreground peer-focus:ring-2 peer-focus:ring-muted-foreground dark:peer-focus:ring-foreground peer-focus:ring-offset-2 peer-aria-checked:bg-foreground peer-aria-checked:text-secondary dark:hover:bg-slate-700 peer-aria-checked:dark:hover:bg-[white] transition-none",
       },
       size: {
+        xs: "py-1 px-2 text-xs",
         default: "h-9 px-4 py-2",
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",

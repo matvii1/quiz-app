@@ -7,10 +7,11 @@ type MainLayoutProps = {
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   return (
-    <div>
+    <>
       <Navbar />
-      {children}
-    </div>
+
+      <main className="flex-1">{children}</main>
+    </>
   )
 }
 

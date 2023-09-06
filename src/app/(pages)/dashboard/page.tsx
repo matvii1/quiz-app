@@ -3,6 +3,7 @@ import { getAuthSession } from "@/lib/nextAuth"
 import { redirect } from "next/navigation"
 import { FC } from "react"
 import { Card, HotTopicsCard } from "./components"
+import { RecentActivity } from "./components/RecentActivity"
 
 const Dashborad: FC = async () => {
   const session = await getAuthSession()
@@ -12,7 +13,7 @@ const Dashborad: FC = async () => {
   }
 
   return (
-    <main className="container">
+    <main className="container flex-1">
       <div className="flex items-center gap-3">
         <Title className="mt-6">Dashboard</Title>
       </div>
@@ -32,8 +33,10 @@ const Dashborad: FC = async () => {
           navigateTo="/history"
         />
       </div>
-      <div className="grid">
+
+      <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <HotTopicsCard />
+        <RecentActivity />
       </div>
     </main>
   )

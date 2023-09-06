@@ -39,7 +39,9 @@ const Card: FC<CardProps> = ({ title, description, icon, navigateTo }) => {
         {ICONS[icon]}
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-foreground">{description}</p>
+        <p className="text-sm text-muted-foreground dark:text-foreground">
+          {description}
+        </p>
       </CardContent>
     </UiCard>
   )

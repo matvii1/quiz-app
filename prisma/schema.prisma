@@ -1,13 +1,13 @@
 generator client {
   provider = "prisma-client-js"
 }
- 
+
 datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
- 
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -21,11 +21,12 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([provider, providerAccountId])
   @@index([userId])
 }
- 
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
@@ -35,13 +36,46 @@ model Session {
 
   @@index([userId])
 }
- 
+
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
   emailVerified DateTime?
-  image    String?
-  accounts Account[]
-  sessions Session[]
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  Game          Game[]
+}
+
+enum GameType {
+  open_ended
+  mulitple_choice
+}
+
+model Game {
+  id          String     @id @default(uuid())
+  timeStarted DateTime
+  topic       String
+  gameType    GameType
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  questions    Question[]
+
+  @@index([userId], name: "userId")
+}
+
+model Question {
+  id                String    @id @default(uuid())
+  question          String
+  answer            String
+  options           Json?
+  precentageCorrect Float?
+  isCorrect         Boolean?
+  questionType      GameType?
+  userAnswer        String?
+  game              Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  gameId            String
+
+  @@index([gameId], name: "gameId")
 }

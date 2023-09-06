@@ -4,6 +4,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  WordCloud,
 } from "@/components/ui"
 import { FC } from "react"
 
@@ -14,7 +15,9 @@ const HotTopicsCard: FC = () => {
         <CardTitle className="text-xl font-bold">Hot topics</CardTitle>
         <CardDescription>Click on the topic to start the quiz!</CardDescription>
       </CardHeader>
-      <CardContent>word cloud</CardContent>
+      <CardContent>
+        <WordCloud />
+      </CardContent>
     </Card>
   )
 }

@@ -10,7 +10,11 @@ const Home: FC = async () => {
     return redirect("/dashboard")
   }
 
-  return <WelcomeCard />
+  return (
+    <main className="flex flex-1 items-center justify-center">
+      <WelcomeCard />
+    </main>
+  )
 }
 
 export default Home

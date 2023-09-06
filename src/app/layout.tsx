@@ -1,4 +1,4 @@
-import { MainLayout } from "@/components/layouts"
+import { Navbar } from "@/components/common"
 import { SessionProvider, ThemeProvider } from "@/components/providers"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
@@ -19,10 +19,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "min-h-screen antialiased")}>
+      <body
+        className={cn(
+          inter.className,
+          "flex min-h-screen flex-col antialiased",
+        )}
+      >
         <SessionProvider>
           <ThemeProvider attribute="class" defaultTheme="default" enableSystem>
-            <MainLayout>{children}</MainLayout>
+            <Navbar />
+            {children}
           </ThemeProvider>
         </SessionProvider>
       </body>

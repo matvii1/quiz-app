@@ -1,2 +1,2 @@
-export * from './Card'
-export * from './HotTopicsCard'
+export * from "./Card"
+export * from "./HotTopicsCard"
