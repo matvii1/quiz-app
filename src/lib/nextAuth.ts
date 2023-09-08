@@ -6,14 +6,14 @@ import { prisma } from "./db"
 declare module "next-auth" {
   interface Session {
     user: {
-      id: number
+      id: string
     } & DefaultSession["user"]
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    id: number
+    id: string
   }
 }
 
@@ -30,7 +30,7 @@ export const authOptions: AuthOptions = {
       })
 
       if (db_user) {
-        token.id = +db_user.id
+        token.id = db_user.id
       }
 
       return token

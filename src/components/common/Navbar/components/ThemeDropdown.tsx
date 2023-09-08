@@ -22,11 +22,9 @@ const ThemeDropdown: FC = () => {
     setTheme("dark")
   }
 
-  // function handleSwitchSystem() {
-  //   setTheme("system");
-  // }
-
-  // TODO: Uncomment the above function and the DropdownMenuItem below to enable system theme switching
+  function handleSwitchSystem() {
+    setTheme("system")
+  }
 
   return (
     <DropdownMenu>
@@ -47,9 +45,9 @@ const ThemeDropdown: FC = () => {
         >
           Dark
         </DropdownMenuItem>
-        {/* <DropdownMenuItem className="px-4 py-2" onClick={handleSwitchSystem}>
+        <DropdownMenuItem className="px-4 py-2" onClick={handleSwitchSystem}>
           System
-        </DropdownMenuItem> */}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

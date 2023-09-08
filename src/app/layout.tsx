@@ -1,5 +1,9 @@
 import { Navbar } from "@/components/common"
-import { SessionProvider, ThemeProvider } from "@/components/providers"
+import {
+  QueryProvider,
+  SessionProvider,
+  ThemeProvider,
+} from "@/components/providers"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { cn } from "../lib/utils"
@@ -24,12 +28,19 @@ export default function RootLayout({
           inter.className,
           "flex min-h-screen flex-col antialiased",
         )}
+        id="body"
       >
         <SessionProvider>
-          <ThemeProvider attribute="class" defaultTheme="default" enableSystem>
-            <Navbar />
-            {children}
-          </ThemeProvider>
+          <QueryProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="default"
+              enableSystem
+            >
+              <Navbar />
+              {children}
+            </ThemeProvider>
+          </QueryProvider>
         </SessionProvider>
       </body>
     </html>

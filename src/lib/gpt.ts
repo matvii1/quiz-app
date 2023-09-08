@@ -40,11 +40,6 @@ export async function strict_output(
       output_format_prompt += `\nIf output field is a list, classify output into the best element of the list.`
     }
 
-    // if output_format contains dynamic elements, process it accordingly
-    if (dynamic_elements) {
-      output_format_prompt += `\nAny text enclosed by < and > indicates you must generate content to replace it. Example input: Go to <location>, Example output: Go to the garden\nAny output key containing < and > indicates you must generate the key name to replace it. Example input: {'<location>': 'description of location'}, Example output: {school: a place for education}`
-    }
-
     // if input is in a list format, ask it to generate json in a list
     if (list_input) {
       output_format_prompt += `\nGenerate an array of json, one json for each input element.`

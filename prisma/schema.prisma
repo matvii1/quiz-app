@@ -50,7 +50,7 @@ model User {
 
 enum GameType {
   open_ended
-  mulitple_choice
+  multiple_choice
 }
 
 model Game {
@@ -60,7 +60,7 @@ model Game {
   gameType    GameType
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
-  questions    Question[]
+  questions   Question[]
 
   @@index([userId], name: "userId")
 }
