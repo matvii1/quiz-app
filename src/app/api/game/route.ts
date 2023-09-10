@@ -111,8 +111,8 @@ export const POST = async (req: Request, res: Response) => {
 }
 
 export const DELETE = async (req: Request, res: Response) => {
-  await prisma.user.deleteMany()
   await prisma.game.deleteMany()
+  await prisma.question.deleteMany()
 
   return NextResponse.json({
     message: "hello",
