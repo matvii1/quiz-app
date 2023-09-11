@@ -27,13 +27,16 @@ const MCQuizProvider: FC<MCQuizProviderProps> = ({ children, game }) => {
     wrongCount: 0,
     correctCount: 0,
   })
+  const [hasEnded, setHasEnded] = useState(false)
 
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
     null,
   )
-  
+
   const { timer, resetTimer } = useTimer()
   const { questionIndex, next, isNextShown } = useQuestion(questionsLength)
+
+  const isLastQuestion = questionIndex === questionsLength - 1
 
   function handleSelect(index: number) {
     setSelectedOptionIndex(index)
@@ -66,6 +69,9 @@ const MCQuizProvider: FC<MCQuizProviderProps> = ({ children, game }) => {
     isNextShown,
     setSelectedOptionIndex,
     next,
+    setHasEnded,
+    hasEnded,
+    isLastQuestion,
   }
 
   return <MSQContext.Provider value={value}>{children}</MSQContext.Provider>

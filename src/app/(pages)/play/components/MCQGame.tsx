@@ -4,7 +4,7 @@ import { api } from "@/app/axios"
 import { Button } from "@/components/ui"
 import { ChevronRight, Loader2 } from "lucide-react"
 import { redirect } from "next/navigation"
-import { FC, useCallback } from "react"
+import { FC, useCallback, useEffect } from "react"
 import { useMutation } from "react-query"
 import { z } from "zod"
 import { GameHeader, MCQuiz } from "."
@@ -17,13 +17,18 @@ const MCQGame: FC = () => {
     isNextShown,
     selectedOptionIndex,
     next,
+    timer,
     currentQuestion,
     setStatistics,
     resetTimer,
     options,
-    questionIndex,
-    questionsLength,
     setSelectedOptionIndex,
+    questionIndex,
+    game,
+    setHasEnded,
+    hasEnded,
+    isLastQuestion,
+    questionsLength,
   } = useMSQContext()
 
   const { mutate: checkAnswer, isLoading: isChecking } = useMutation({
@@ -38,40 +43,88 @@ const MCQGame: FC = () => {
   })
 
   const handleNext = useCallback(() => {
-    console.log(selectedOptionIndex)
-    if (selectedOptionIndex == null) return
+    if (selectedOptionIndex == null && timer > 0) {
+      console.log("early")
 
-    checkAnswer(undefined, {
-      onSuccess: ({ data }) => {
-        if (data.correct) {
-          setStatistics((prev) => ({
-            ...prev,
-            correctCount: prev.correctCount + 1,
-          }))
-        }
+      return
+    }
 
-        if (!data.correct) {
-          setStatistics((prev) => ({
-            ...prev,
-            wrongCount: prev.wrongCount + 1,
-          }))
-        }
+    if (timer > 0) {
+      console.log("timer > 0")
 
-        resetTimer()
-        setSelectedOptionIndex(null)
-        next()
-      },
-    })
-  }, [checkAnswer, setStatistics, next, resetTimer, selectedOptionIndex])
+      checkAnswer(undefined, {
+        onSuccess: ({ data }) => {
+          if (data.correct) {
+            setStatistics((prev) => ({
+              ...prev,
+              correctCount: prev.correctCount + 1,
+            }))
+          }
+
+          if (!data.correct) {
+            setStatistics((prev) => ({
+              ...prev,
+              wrongCount: prev.wrongCount + 1,
+            }))
+          }
+
+          resetTimer()
+          setSelectedOptionIndex(null)
+
+          console.log({ questionIndex, questionsLength })
+
+          if (isLastQuestion) {
+            setHasEnded(true)
+
+            return
+          }
+
+          next()
+        },
+      })
+    }
+
+    if (timer === 0) {
+      setStatistics((prev) => ({
+        ...prev,
+        wrongCount: prev.wrongCount + 1,
+      }))
+
+      resetTimer()
+      setSelectedOptionIndex(null)
+
+      console.log("timer === 0")
+
+      if (isLastQuestion) {
+        console.log("ended")
+        setHasEnded(true)
+
+        return redirect("/")
+      }
+
+      next()
+    }
+  }, [
+    checkAnswer,
+    setStatistics,
+    next,
+    isLastQuestion,
+    setHasEnded,
+    questionIndex,
+    questionsLength,
+    resetTimer,
+    selectedOptionIndex,
+    setSelectedOptionIndex,
+    timer,
+  ])
 
   const handleSubmit = useCallback(() => {
-    console.log(selectedOptionIndex)
     if (selectedOptionIndex == null) return
 
     handleNext()
 
     // TODO: redirect to result page
-    return redirect("/")
+    // return redirect("/")
   }, [handleNext, selectedOptionIndex])
 
   const handleSelectNextOption = () => {
@@ -97,6 +150,16 @@ const MCQGame: FC = () => {
     next: handleSelectNextOption,
     prev: handleSelectPrevOption,
   })
+
+  useEffect(() => {
+    if (timer === 0) {
+      handleNext()
+    }
+  }, [timer, handleNext])
+
+  if (hasEnded) {
+    return <div>You finished Game in 3 minutes</div>
+  }
 
   return (
     <div className="w-[90%] md:w-[700px]">
