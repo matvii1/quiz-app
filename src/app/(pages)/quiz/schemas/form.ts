@@ -2,7 +2,7 @@ import { z } from "zod"
 
 const topicConstraint = {
   minLength: 3,
-  maxLength: 15,
+  maxLength: 20,
 }
 
 const amountConstraint = {

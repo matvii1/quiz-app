@@ -1,7 +1,7 @@
 "use client"
 
 import { api } from "@/app/axios"
-import { Button, Form } from "@/components/ui"
+import { Button, Form, useToast } from "@/components/ui"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -17,6 +17,7 @@ type ApiResponse = {
 }
 
 const QuizCreationForm: FC = () => {
+  const { toast } = useToast()
   const router = useRouter()
   const {
     mutate: getQuestions,
@@ -43,15 +44,27 @@ const QuizCreationForm: FC = () => {
     try {
       getQuestions(gameOptions, {
         onSuccess: (res) => {
-          if (form.getValues("type") === "multiple_choice") {
+          const type = form.getValues("type")
+
+          if (type === "multiple_choice") {
             router.push(`/play/mcq/${res.gameId}`)
-          } else {
+          }
+
+          if (type === "open_ended") {
             router.push(`/play/open-ended/${res.gameId}`)
           }
+
+          form.reset()
+        },
+        onError: (err) => {
+          console.error(err)
+          toast({
+            title: "Something went wrong",
+            description: "Ai could not create a quiz. Please try again later.",
+            variant: "destructive",
+          })
         },
       })
-
-      form.reset()
     } catch (error) {
       console.error(error)
       form.reset()

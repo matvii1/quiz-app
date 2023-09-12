@@ -2,7 +2,7 @@ import { prisma } from "@/lib/db"
 import { getAuthSession } from "@/lib/nextAuth"
 import { redirect } from "next/navigation"
 import { FC } from "react"
-import { MCQGame } from "../../components"
+import { OpenEndedGame } from "../../components/open-ended"
 import { OpenEndedProvider } from "../../providers"
 
 type OpenEndedProps = {
@@ -30,6 +30,8 @@ const OpenEnded: FC<OpenEndedProps> = async ({ params: { gameId } }) => {
       },
     },
   })
+
+  console.log(game)
 
   if (!game || game.gameType !== "open_ended") {
     return redirect("/dashboard")

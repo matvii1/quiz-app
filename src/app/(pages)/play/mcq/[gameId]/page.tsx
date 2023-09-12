@@ -2,8 +2,8 @@ import { prisma } from "@/lib/db"
 import { getAuthSession } from "@/lib/nextAuth"
 import { redirect } from "next/navigation"
 import { FC } from "react"
-import { MCQGame } from "../../components"
 import { MCQuizProvider } from "../../providers/mcq"
+import { MCQGame } from '../../components/mcq'
 
 type MCQPageProps = {
   params: {

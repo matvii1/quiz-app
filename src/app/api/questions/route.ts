@@ -6,24 +6,6 @@ import { ZodError } from "zod"
 
 export const POST = async (req: Request, res: Response) => {
   try {
-    const session = await getAuthSession()
-
-    console.log("user", session?.user)
-
-    // TODO: does not work
-
-    // if (session?.user == null) {
-    //   console.log("====================================")
-    //   console.log("here")
-    //   console.log("====================================")
-    //   return NextResponse.json(
-    //     {
-    //       error: "You need to be logged in to create a quiz",
-    //     },
-    //     { status: 401 },
-    //   )
-    // }
-
     const body = await req.json()
     const { amount, topic, type } = formSchema.parse(body)
     let questions: any

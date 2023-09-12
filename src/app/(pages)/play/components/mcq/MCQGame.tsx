@@ -3,11 +3,11 @@
 import { api } from "@/app/axios"
 import { Button } from "@/components/ui"
 import { ChevronRight, Loader2 } from "lucide-react"
-import { redirect } from "next/navigation"
 import { FC, useCallback, useEffect } from "react"
 import { useMutation } from "react-query"
 import { z } from "zod"
-import { GameHeader, MCQuiz } from ".."
+import { MCQuiz } from "."
+import { GameHeader } from ".."
 import { checkAnswerSchema } from "../../../quiz/schemas"
 import { useKeyboradNavigation } from "../../hooks"
 import { useMSQContext } from "../../providers/mcq"
@@ -26,6 +26,7 @@ const MCQGame: FC = () => {
     setSelectedOptionIndex,
     questionIndex,
     setHasEnded,
+    game,
     hasEnded,
     isLastQuestion,
     questionsLength,
@@ -69,8 +70,6 @@ const MCQGame: FC = () => {
           resetTimer()
           setSelectedOptionIndex(null)
 
-          console.log({ questionIndex, questionsLength })
-
           if (isLastQuestion) {
             setHasEnded(true)
 
@@ -94,10 +93,9 @@ const MCQGame: FC = () => {
       console.log("timer === 0")
 
       if (isLastQuestion) {
-        console.log("ended")
         setHasEnded(true)
 
-        return redirect("/")
+        return
       }
 
       next()
@@ -108,8 +106,6 @@ const MCQGame: FC = () => {
     next,
     isLastQuestion,
     setHasEnded,
-    questionIndex,
-    questionsLength,
     resetTimer,
     selectedOptionIndex,
     setSelectedOptionIndex,
@@ -152,13 +148,18 @@ const MCQGame: FC = () => {
     }
   }, [timer, handleNext])
 
-  if (!hasEnded) {
-    return <EndGame />
+  if (hasEnded) {
+    return <EndGame gameId={game.id} timeStarted={game.timeStarted} />
   }
 
   return (
     <div className="w-[90%] md:w-[700px]">
-      <GameHeader timer={timer} topic={topic} statistics={statistics} />
+      <GameHeader
+        type="multiple-choice"
+        timer={timer}
+        topic={topic}
+        statistics={statistics}
+      />
       <MCQuiz />
 
       <div className="mt-4 flex justify-end">

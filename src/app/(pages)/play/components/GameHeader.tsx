@@ -4,8 +4,6 @@ import { Badge } from "@/components/ui"
 import { Timer } from "lucide-react"
 import { FC } from "react"
 import { StatisticsCard } from "."
-import { useMSQContext } from "../providers/mcq"
-import { type } from "os"
 
 type GameHeaderProps = {
   timer: number
@@ -14,9 +12,15 @@ type GameHeaderProps = {
     correctCount: number
     wrongCount: number
   }
+  type: "open_ended" | "multiple-choice"
 }
 
-const GameHeader: FC<GameHeaderProps> = ({ timer, topic, statistics }) => {
+const GameHeader: FC<GameHeaderProps> = ({
+  timer,
+  topic,
+  statistics,
+  type,
+}) => {
   return (
     <div className="mt-6 flex justify-between">
       <div className="flex flex-col gap-2">
@@ -30,7 +34,7 @@ const GameHeader: FC<GameHeaderProps> = ({ timer, topic, statistics }) => {
         </div>
       </div>
 
-      <StatisticsCard statistics={statistics} />
+      {type === "multiple-choice" && <StatisticsCard statistics={statistics} />}
     </div>
   )
 }
