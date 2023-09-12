@@ -2,8 +2,8 @@
 
 import { Card, CardDescription, CardHeader } from "@/components/ui"
 import { FC } from "react"
-import { OptionCard } from "."
-import { useMSQContext } from "../providers"
+import { OptionCard } from ".."
+import { useMSQContext } from "../../providers/mcq"
 
 const MCQuiz: FC = () => {
   const {

@@ -3,11 +3,16 @@
 import { Card, CardContent, Separator } from "@/components/ui"
 import { CheckCircle, XCircle } from "lucide-react"
 import { FC } from "react"
-import { useMSQContext } from "../providers"
+import { useMSQContext } from "../providers/mcq"
 
-const StatisticsCard: FC = () => {
-  const { statistics } = useMSQContext()
+type StatisticsCardProps = {
+  statistics: {
+    correctCount: number
+    wrongCount: number
+  }
+}
 
+const StatisticsCard: FC<StatisticsCardProps> = ({ statistics }) => {
   return (
     <Card>
       <CardContent className="flex items-center gap-2 p-3">

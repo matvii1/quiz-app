@@ -27,6 +27,7 @@ export type MSQContextType = {
   isLastQuestion: boolean
 }
 
-export type PickedGame = Game & {
+export type PickedMCQGame = Game & {
   questions: Pick<Question, "id" | "question" | "options">[]
 }
+

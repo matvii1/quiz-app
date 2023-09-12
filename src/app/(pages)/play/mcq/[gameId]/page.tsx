@@ -3,7 +3,7 @@ import { getAuthSession } from "@/lib/nextAuth"
 import { redirect } from "next/navigation"
 import { FC } from "react"
 import { MCQGame } from "../../components"
-import { MCQuizProvider } from "../../providers"
+import { MCQuizProvider } from "../../providers/mcq"
 
 type MCQPageProps = {
   params: {

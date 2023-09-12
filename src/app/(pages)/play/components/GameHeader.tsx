@@ -4,11 +4,19 @@ import { Badge } from "@/components/ui"
 import { Timer } from "lucide-react"
 import { FC } from "react"
 import { StatisticsCard } from "."
-import { useMSQContext } from "../providers"
+import { useMSQContext } from "../providers/mcq"
+import { type } from "os"
 
-const GameHeader: FC = () => {
-  const { timer, topic } = useMSQContext()
+type GameHeaderProps = {
+  timer: number
+  topic: string
+  statistics: {
+    correctCount: number
+    wrongCount: number
+  }
+}
 
+const GameHeader: FC<GameHeaderProps> = ({ timer, topic, statistics }) => {
   return (
     <div className="mt-6 flex justify-between">
       <div className="flex flex-col gap-2">
@@ -22,7 +30,7 @@ const GameHeader: FC = () => {
         </div>
       </div>
 
-      <StatisticsCard />
+      <StatisticsCard statistics={statistics} />
     </div>
   )
 }

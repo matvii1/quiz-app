@@ -8,13 +8,13 @@ import {
   useMemo,
   useState,
 } from "react"
-import { MSQContextType, PickedGame, StatisticType } from "."
-import { useTimer } from "../hooks"
-import { useQuestion } from "../hooks/useQuestions"
+import { MSQContextType, PickedMCQGame, StatisticType } from "."
+import { useTimer } from "../../hooks"
+import { useQuestion } from "../../hooks/useQuestions"
 
 type MCQuizProviderProps = {
   children: ReactNode
-  game: PickedGame
+  game: PickedMCQGame
 }
 
 const MSQContext = createContext<MSQContextType>({} as MSQContextType)

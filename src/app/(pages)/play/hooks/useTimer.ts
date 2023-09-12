@@ -6,7 +6,7 @@ export function useTimer() {
   const [timer, setTimer] = useState(TIME_FOR_QUIZ)
 
   useEffect(() => {
-    setInterval(() => {
+    const timer = setInterval(() => {
       setTimer((prev) => {
         if (prev > 0) {
           return prev - 1
@@ -15,6 +15,10 @@ export function useTimer() {
         return prev
       })
     }, 1000)
+
+    return () => {
+      clearInterval(timer)
+    }
   }, [])
 
   const resetTimer = useCallback(() => {

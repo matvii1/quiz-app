@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui"
 import { FC } from "react"
-import { useMSQContext } from "../providers"
+import { useMSQContext } from "../../providers/mcq"
 
 type OptionCardProps = {
   option: string

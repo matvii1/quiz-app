@@ -7,10 +7,11 @@ import { redirect } from "next/navigation"
 import { FC, useCallback, useEffect } from "react"
 import { useMutation } from "react-query"
 import { z } from "zod"
-import { GameHeader, MCQuiz } from "."
-import { checkAnswerSchema } from "../../quiz/schemas"
-import { useKeyboradNavigation } from "../hooks"
-import { useMSQContext } from "../providers"
+import { GameHeader, MCQuiz } from ".."
+import { checkAnswerSchema } from "../../../quiz/schemas"
+import { useKeyboradNavigation } from "../../hooks"
+import { useMSQContext } from "../../providers/mcq"
+import EndGame from "../EndGame"
 
 const MCQGame: FC = () => {
   const {
@@ -24,11 +25,12 @@ const MCQGame: FC = () => {
     options,
     setSelectedOptionIndex,
     questionIndex,
-    game,
     setHasEnded,
     hasEnded,
     isLastQuestion,
     questionsLength,
+    topic,
+    statistics,
   } = useMSQContext()
 
   const { mutate: checkAnswer, isLoading: isChecking } = useMutation({
@@ -44,14 +46,10 @@ const MCQGame: FC = () => {
 
   const handleNext = useCallback(() => {
     if (selectedOptionIndex == null && timer > 0) {
-      console.log("early")
-
       return
     }
 
     if (timer > 0) {
-      console.log("timer > 0")
-
       checkAnswer(undefined, {
         onSuccess: ({ data }) => {
           if (data.correct) {
@@ -122,9 +120,6 @@ const MCQGame: FC = () => {
     if (selectedOptionIndex == null) return
 
     handleNext()
-
-    // TODO: redirect to result page
-    // return redirect("/")
   }, [handleNext, selectedOptionIndex])
 
   const handleSelectNextOption = () => {
@@ -157,13 +152,13 @@ const MCQGame: FC = () => {
     }
   }, [timer, handleNext])
 
-  if (hasEnded) {
-    return <div>You finished Game in 3 minutes</div>
+  if (!hasEnded) {
+    return <EndGame />
   }
 
   return (
     <div className="w-[90%] md:w-[700px]">
-      <GameHeader />
+      <GameHeader timer={timer} topic={topic} statistics={statistics} />
       <MCQuiz />
 
       <div className="mt-4 flex justify-end">

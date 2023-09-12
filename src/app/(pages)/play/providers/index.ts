@@ -1,2 +1,2 @@
-export * from './mcquiz-provider'
-export * from './types'
+export * from "./mcq"
+export * from "./open-ended"
