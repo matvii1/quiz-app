@@ -5,13 +5,14 @@ import {
   ReactNode,
   createContext,
   useContext,
+  useLayoutEffect,
   useMemo,
   useState,
 } from "react"
 import { OpenEndedContextType, PickedOpenEndedGame } from "."
+import { StatisticType } from ".."
 import { useTimer } from "../../hooks"
 import { useQuestion } from "../../hooks/useQuestions"
-import { StatisticType } from '..'
 
 type OpenEndedProviderProps = {
   children: ReactNode
@@ -31,7 +32,13 @@ const OpenEndedProvider: FC<OpenEndedProviderProps> = ({ children, game }) => {
     correctCount: 0,
   })
 
-  const { timer, resetTimer } = useTimer()
+  useLayoutEffect(() => {
+    if (game.timeEnded) {
+      setHasEnded(true)
+    }
+  }, [setHasEnded, game.timeEnded])
+
+  const { timer, resetTimer, stopTimer } = useTimer()
   const { questionIndex, next, isNextShown } = useQuestion(questionsLength)
 
   const isLastQuestion = questionIndex === questionsLength - 1
@@ -54,7 +61,8 @@ const OpenEndedProvider: FC<OpenEndedProviderProps> = ({ children, game }) => {
     hasEnded,
     isLastQuestion,
     statistics,
-    setStatistics
+    setStatistics,
+    stopTimer
   }
 
   return (

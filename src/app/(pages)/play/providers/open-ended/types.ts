@@ -15,7 +15,8 @@ export type OpenEndedContextType = {
   hasEnded: boolean
   isLastQuestion: boolean
   statistics: StatisticType
-  setStatistics: React.Dispatch<React.SetStateAction<StatisticType>>
+  setStatistics: React.Dispatch<React.SetStateAction<StatisticType>>,
+  stopTimer: () => void
 }
 
 export type PickedOpenEndedGame = Game & {

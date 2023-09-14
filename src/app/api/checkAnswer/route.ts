@@ -1,6 +1,7 @@
 import { checkAnswerSchema } from "@/app/(pages)/quiz/schemas"
 import { prisma } from "@/lib/db"
 import { NextResponse } from "next/server"
+import { compareTwoStrings } from "string-similarity"
 import { ZodError } from "zod"
 
 export const POST = async (req: Request, res: Response) => {
@@ -78,6 +79,27 @@ export const POST = async (req: Request, res: Response) => {
           },
         )
       }
+    }
+
+    if (question.questionType === "open_ended") {
+      const similarityPrecentage =
+        compareTwoStrings(
+          answer.toLowerCase().trim(),
+          question.answer.toLowerCase().trim(),
+        ) * 100
+
+      await prisma.question.update({
+        where: {
+          id: questionId,
+        },
+        data: {
+          precentageCorrect: similarityPrecentage,
+        },
+      })
+
+      return NextResponse.json({
+        precentageCorrect: similarityPrecentage,
+      })
     }
 
     return NextResponse.json(

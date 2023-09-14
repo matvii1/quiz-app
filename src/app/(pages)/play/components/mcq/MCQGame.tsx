@@ -1,7 +1,7 @@
 "use client"
 
 import { api } from "@/app/axios"
-import { Button } from "@/components/ui"
+import { Button, toast } from "@/components/ui"
 import { ChevronRight, Loader2 } from "lucide-react"
 import { FC, useCallback, useEffect } from "react"
 import { useMutation } from "react-query"
@@ -11,6 +11,7 @@ import { GameHeader } from ".."
 import { checkAnswerSchema } from "../../../quiz/schemas"
 import { useKeyboradNavigation } from "../../hooks"
 import { useMSQContext } from "../../providers/mcq"
+import { EndGameSchemaType } from "../../types"
 import EndGame from "../EndGame"
 
 const MCQGame: FC = () => {
@@ -21,19 +22,17 @@ const MCQGame: FC = () => {
     timer,
     currentQuestion,
     setStatistics,
+    stopTimer,
     resetTimer,
     options,
     setSelectedOptionIndex,
-    questionIndex,
     setHasEnded,
     game,
     hasEnded,
     isLastQuestion,
-    questionsLength,
     topic,
     statistics,
   } = useMSQContext()
-
   const { mutate: checkAnswer, isLoading: isChecking } = useMutation({
     mutationFn: () => {
       const payload: z.infer<typeof checkAnswerSchema> = {
@@ -42,6 +41,25 @@ const MCQGame: FC = () => {
       }
 
       return api.post(`/api/checkAnswer`, payload)
+    },
+  })
+
+  const {
+    data,
+    mutate: endGame,
+    isLoading: isLoadingGameEnd,
+  } = useMutation({
+    mutationFn: async () => {
+      const payload: EndGameSchemaType = {
+        gameId: game.id,
+      }
+
+      const { data } = await api.post<{ endTime: Date }>(
+        "/api/gameEnd",
+        payload,
+      )
+
+      return data
     },
   })
 
@@ -90,8 +108,6 @@ const MCQGame: FC = () => {
       resetTimer()
       setSelectedOptionIndex(null)
 
-      console.log("timer === 0")
-
       if (isLastQuestion) {
         setHasEnded(true)
 
@@ -114,9 +130,20 @@ const MCQGame: FC = () => {
 
   const handleSubmit = useCallback(() => {
     if (selectedOptionIndex == null) return
+    stopTimer()
 
-    handleNext()
-  }, [handleNext, selectedOptionIndex])
+    endGame(undefined, {
+      onSuccess: () => {
+        handleNext()
+      },
+      onError: () => {
+        toast({
+          title: "Can't load the statistics",
+          description: "Please try again later.",
+        })
+      },
+    })
+  }, [handleNext, selectedOptionIndex, endGame, stopTimer])
 
   const handleSelectNextOption = () => {
     setSelectedOptionIndex((prev) => {
@@ -149,7 +176,7 @@ const MCQGame: FC = () => {
   }, [timer, handleNext])
 
   if (hasEnded) {
-    return <EndGame gameId={game.id} timeStarted={game.timeStarted} />
+    return <EndGame gameId={game.id} />
   }
 
   return (
@@ -164,7 +191,7 @@ const MCQGame: FC = () => {
 
       <div className="mt-4 flex justify-end">
         {isNextShown && (
-          <Button onClick={handleNext} className="" disabled={isChecking}>
+          <Button onClick={handleNext} disabled={isChecking}>
             {isChecking ? (
               <Loader2 className="animate-spin" />
             ) : (
@@ -174,7 +201,21 @@ const MCQGame: FC = () => {
             )}
           </Button>
         )}
-        {!isNextShown && <Button onClick={handleSubmit}>Submit</Button>}
+        {!isNextShown && (
+          <Button
+            disabled={isLoadingGameEnd}
+            onClick={handleSubmit}
+            className="flex items-center"
+          >
+            {isLoadingGameEnd ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <>
+                Submit <ChevronRight size={20} strokeWidth={1.5} />
+              </>
+            )}
+          </Button>
+        )}
       </div>
     </div>
   )

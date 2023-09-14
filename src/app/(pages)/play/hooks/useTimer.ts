@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 const TIME_FOR_QUIZ = 45
 
 export function useTimer() {
   const [timer, setTimer] = useState(TIME_FOR_QUIZ)
 
+  const timerId = useRef<NodeJS.Timeout>()
+
   useEffect(() => {
-    const timer = setInterval(() => {
+    timerId.current = setInterval(() => {
       setTimer((prev) => {
         if (prev > 0) {
           return prev - 1
@@ -16,14 +18,16 @@ export function useTimer() {
       })
     }, 1000)
 
-    return () => {
-      clearInterval(timer)
-    }
+    return () => clearInterval(timerId.current)
   }, [])
+
+  function stopTimer() {
+    clearInterval(timerId.current)
+  }
 
   const resetTimer = useCallback(() => {
     setTimer(TIME_FOR_QUIZ)
   }, [])
 
-  return { timer, resetTimer }
+  return { timer, resetTimer, stopTimer }
 }

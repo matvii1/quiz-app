@@ -1,50 +1,76 @@
 "use client"
 
-import { Badge, buttonVariants } from "@/components/ui"
+import { api } from "@/app/axios"
+import { buttonVariants } from "@/components/ui"
 import { cn } from "@/lib/utils"
+import { BarChartBig, Loader2 } from "lucide-react"
 import Link from "next/link"
-import { FC, useEffect, useState } from "react"
+import { FC } from "react"
+import { useQuery } from "react-query"
 
 type EndGameProps = {
-  timeStarted: Date
   gameId: string
 }
 
-const EndGame: FC<EndGameProps> = ({ timeStarted, gameId }) => {
-  const [time, setTime] = useState({
-    seconds: 0,
-    minutes: 0,
-    hours: 0,
+const EndGame: FC<EndGameProps> = ({ gameId }) => {
+  const {
+    data: game,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["game", gameId],
+    queryFn: async () => {
+      const { data } = await api.get(`/api/game/${gameId}`)
+
+      return data.game
+    },
   })
 
-  useEffect(() => {
-    if (!timeStarted) return
+  if (isLoading) {
+    return <Loader2 className="h-6 w-6 animate-spin" />
+  }
 
-    const now = new Date()
-    const difference =  timeStarted.getTime() - now.getTime()
+  console.log(game, isError, game.timeEnded)
 
-    const hours = Math.floor(difference / 3600)
-    const minutes = Math.floor((difference - hours * 3600) / 60)
-    const seconds = Math.floor(difference - hours * 3600 - minutes * 60)
-    setTime({
-      seconds,
-      minutes,
-      hours,
-    })
-  }, [timeStarted])
+  if (game.timeEnded == null || isError) {
+    return (
+      <p
+        className={buttonVariants({
+          variant: "destructive",
+        })}
+      >
+        Something went wrong. Please try again later.
+      </p>
+    )
+  }
 
-  const hours = time.hours > 0 ? `${time.hours}h,` : ""
-  const minutes = time.minutes > 0 ? `${time.minutes}m, and` : ""
-  const seconds = time.seconds > 0 ? `${time.seconds}s` : ""
+  let message: string = ""
+  const time =
+    new Date(game.timeEnded)?.getTime() - new Date(game.timeStarted).getTime()
+
+  const hours = Math.floor(time / 1000 / 60 / 60)
+  const minutes = Math.floor(time / 1000 / 60) - hours * 60
+  const seconds = Math.floor(time / 1000) - hours * 60 * 60 - minutes * 60
+
+  if (hours) {
+    message += `${hours}h, `
+  }
+
+  if (minutes) {
+    message += `${minutes}m, and`
+  }
 
   return (
-    <div className="flex max-w-sm flex-col gap-6">
-      <Badge
-        variant="outline"
-        className="truncate py-2"
-      >{`The game took ${hours} ${minutes} ${seconds} to complete.`}</Badge>
-      <Link href={`/statistics/${gameId}`} className={cn(buttonVariants())}>
-        View statistics
+    <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col justify-center">
+      <div className="mt-2 max-w-sm rounded-md bg-green-500 px-4 py-2 text-sm font-semibold text-white dark:bg-green-700">
+        {`You completed the game in ${message} ${seconds}s`}
+      </div>
+      <Link
+        href={`/statistics/${gameId}`}
+        className={cn(buttonVariants({ size: "lg" }), "mt-2")}
+      >
+        View Statistics
+        <BarChartBig className="ml-2 h-4 w-4" />
       </Link>
     </div>
   )

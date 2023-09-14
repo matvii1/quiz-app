@@ -9,10 +9,10 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { BookOpen, CopyCheck } from "lucide-react"
 import { FC } from "react"
-import { Form } from "../../types"
+import { QuizCreationFormType } from "../../types"
 
 type ControlsFieldProps = {
-  form: Form
+  form: QuizCreationFormType
 }
 
 const ControlsField: FC<ControlsFieldProps> = ({ form }) => {

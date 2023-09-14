@@ -8,10 +8,10 @@ import {
   Input,
 } from "@/components/ui"
 import { ChangeEvent, FC } from "react"
-import { Form } from "../../types"
+import { QuizCreationFormType } from "../../types"
 
 type AmountFieldProps = {
-  form: Form
+  form: QuizCreationFormType
 }
 
 const AmountField: FC<AmountFieldProps> = ({ form }) => {

@@ -25,6 +25,7 @@ export type MSQContextType = {
   hasEnded: boolean
   setHasEnded: Dispatch<SetStateAction<boolean>>
   isLastQuestion: boolean
+  stopTimer: () => void
 }
 
 export type PickedMCQGame = Game & {

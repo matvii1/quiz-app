@@ -1,12 +1,18 @@
 "use client"
 
-import { Button } from "@/components/ui"
-import { ChevronRight, Loader2 } from "lucide-react"
-import { FC, useCallback, useEffect } from "react"
+import { checkAnswerSchema } from "@/app/(pages)/quiz/schemas"
+import { api } from "@/app/axios"
+import { toast } from "@/components/ui/use-toast"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { FC, useEffect } from "react"
+import { useForm } from "react-hook-form"
 import { useMutation } from "react-query"
-import { OpenEndedQuiz } from "."
+import { z } from "zod"
+import { OpenEndedForm, OpenEndedQuiz } from "."
 import { GameHeader } from ".."
 import { useOpenEndedContext } from "../../providers"
+import { openEndedAsnswerSchema } from "../../schemas"
+import { EndGameSchemaType, OpenEndedAnswerSchemaType } from "../../types"
 import EndGame from "../EndGame"
 
 const OpenEndedGame: FC = () => {
@@ -15,95 +21,154 @@ const OpenEndedGame: FC = () => {
     next,
     timer,
     currentQuestion,
+    stopTimer,
     setStatistics,
     resetTimer,
-    questionIndex,
     setHasEnded,
     game,
     hasEnded,
     isLastQuestion,
-    questionsLength,
     topic,
     statistics,
   } = useOpenEndedContext()
 
-  const { mutate: checkAnswer, isLoading: isChecking } = useMutation({
-    // mutationFn: () => {
-    // const payload: z.infer<typeof checkAnswerSchema> = {
-    //   answer: ''
-    // }
-    // return api.post(`/api/checkAnswer`, payload)
-    // },
+  const {
+    data,
+    mutate: endGame,
+    isLoading: isLoadingGameEnd,
+  } = useMutation({
+    mutationFn: async () => {
+      const payload: EndGameSchemaType = {
+        gameId: game.id,
+      }
+
+      const { data } = await api.post<{ endTime: Date }>(
+        "/api/gameEnd",
+        payload,
+      )
+
+      return data
+    },
   })
 
-  const handleNext = useCallback(() => {
-    // TODO: check if answer exists
+  const form = useForm<OpenEndedAnswerSchemaType>({
+    resolver: zodResolver(openEndedAsnswerSchema),
+    defaultValues: {
+      answer: "",
+    },
+  })
 
-    if (timer > 0) {
-      checkAnswer(undefined, {})
+  const { mutate: checkAnswer, isLoading: isChecking } = useMutation({
+    mutationFn: async (answer: string) => {
+      const payload: z.infer<typeof checkAnswerSchema> = {
+        answer: answer,
+        questionId: currentQuestion.id,
+      }
+
+      return api.post<{ precentageCorrect: number }>(
+        "/api/checkAnswer",
+        payload,
+      )
+    },
+  })
+
+  const handleNext = (values: OpenEndedAnswerSchemaType) => {
+    if (isLastQuestion) {
+      stopTimer()
+
+      endGame(undefined, {
+        onSuccess: () => {
+          checkAnswersNext(values)
+        },
+        onError: () => {
+          toast({
+            title: "Can't load the statistics",
+            description: "Please try again later.",
+          })
+        },
+      })
+
+      return
     }
 
-    if (timer === 0) {
-      setStatistics((prev) => ({
-        ...prev,
-        wrongCount: prev.wrongCount + 1,
-      }))
+    checkAnswersNext(values)
+  }
 
-      resetTimer()
+  useEffect(() => {
+    if (!hasEnded && timer === 0) {
+      toast({
+        title: "Time's up",
+        description: "You ran out of time. You can still submit your answer.",
+        variant: "destructive",
+      })
 
       if (isLastQuestion) {
         setHasEnded(true)
-
         return
       }
-
-      next()
     }
   }, [
-    checkAnswer,
-    setStatistics,
-    next,
-    isLastQuestion,
-    setHasEnded,
-    resetTimer,
     timer,
+    isLastQuestion,
+    next,
+    resetTimer,
+    setHasEnded,
+    setStatistics,
+    hasEnded,
   ])
 
-  const handleSubmit = useCallback(() => {
-    // TODO: check if answer exists
+  function checkAnswersNext(values: OpenEndedAnswerSchemaType) {
+    checkAnswer(values.answer, {
+      onSuccess: ({ data: { precentageCorrect } }) => {
+        toast({
+          title: "Similarity",
+          description: `You got ${Math.round(precentageCorrect)}% correct`,
+        })
 
-    handleNext()
-  }, [handleNext])
+        resetTimer()
 
-  useEffect(() => {
-    if (timer === 0) {
-      handleNext()
-    }
-  }, [timer, handleNext])
+        if (isLastQuestion) {
+          setHasEnded(true)
+
+          return
+        }
+
+        form.reset()
+        next()
+      },
+      onError: () => {
+        stopTimer()
+
+        toast({
+          title: "Error",
+          description: "Something went wrong",
+          variant: "destructive",
+        })
+      },
+    })
+  }
 
   if (hasEnded) {
-    return <EndGame gameId={game.id} timeStarted={game.timeStarted} />
+    return <EndGame gameId={game.id} />
   }
 
   return (
     <div className="w-[90%] md:w-[700px]">
-      <GameHeader type='open_ended' timer={timer} topic={topic} statistics={statistics} />
+      <GameHeader
+        type="open_ended"
+        timer={timer}
+        topic={topic}
+        statistics={statistics}
+      />
       <OpenEndedQuiz />
 
-      <div className="mt-4 flex justify-end">
-        {isNextShown && (
-          <Button onClick={handleNext} className="" disabled={isChecking}>
-            {isChecking ? (
-              <Loader2 className="animate-spin" />
-            ) : (
-              <>
-                Next <ChevronRight size={20} strokeWidth={1.5} />
-              </>
-            )}
-          </Button>
-        )}
-        {!isNextShown && <Button onClick={handleSubmit}>Submit</Button>}
-      </div>
+      <OpenEndedForm
+        handleNext={handleNext}
+        form={form}
+        isChecking={isChecking}
+        isNextShown={isNextShown}
+        isLoadingGameEnd={isLoadingGameEnd}
+      />
     </div>
   )
 }

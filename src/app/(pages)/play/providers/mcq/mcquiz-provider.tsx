@@ -5,6 +5,7 @@ import {
   ReactNode,
   createContext,
   useContext,
+  useLayoutEffect,
   useMemo,
   useState,
 } from "react"
@@ -22,6 +23,7 @@ export const useMSQContext = () => useContext(MSQContext)
 
 const MCQuizProvider: FC<MCQuizProviderProps> = ({ children, game }) => {
   const questionsLength = game.questions.length
+  // TODO: add useeffect that sets has Ended to true
 
   const [statistics, setStatistics] = useState<StatisticType>({
     wrongCount: 0,
@@ -33,7 +35,13 @@ const MCQuizProvider: FC<MCQuizProviderProps> = ({ children, game }) => {
     null,
   )
 
-  const { timer, resetTimer } = useTimer()
+  useLayoutEffect(() => {
+    if (game.timeEnded) {
+      setHasEnded(true)
+    }
+  }, [setHasEnded, game.timeEnded])
+
+  const { timer, resetTimer, stopTimer } = useTimer()
   const { questionIndex, next, isNextShown } = useQuestion(questionsLength)
 
   const isLastQuestion = questionIndex === questionsLength - 1
@@ -72,6 +80,7 @@ const MCQuizProvider: FC<MCQuizProviderProps> = ({ children, game }) => {
     setHasEnded,
     hasEnded,
     isLastQuestion,
+    stopTimer
   }
 
   return <MSQContext.Provider value={value}>{children}</MSQContext.Provider>

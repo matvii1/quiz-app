@@ -31,8 +31,6 @@ const OpenEnded: FC<OpenEndedProps> = async ({ params: { gameId } }) => {
     },
   })
 
-  console.log(game)
-
   if (!game || game.gameType !== "open_ended") {
     return redirect("/dashboard")
   }

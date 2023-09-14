@@ -100,7 +100,7 @@ export const POST = async (req: Request, res: Response) => {
     } else {
       return NextResponse.json(
         {
-          error: "Something went wrong.",
+          error: JSON.stringify(error, null, 2),
         },
         {
           status: 500,

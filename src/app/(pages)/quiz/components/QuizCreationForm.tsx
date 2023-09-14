@@ -9,7 +9,7 @@ import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { useMutation } from "react-query"
 import { formSchema } from "../schemas"
-import { FormSchemaType } from "../types"
+import { QuizCreationSchemaType } from "../types"
 import { AmountField, ControlsField, TopicField } from "./Fields"
 
 type ApiResponse = {
@@ -24,14 +24,14 @@ const QuizCreationForm: FC = () => {
     isLoading,
     isError,
   } = useMutation({
-    mutationFn: async (gameOptions: FormSchemaType) => {
+    mutationFn: async (gameOptions: QuizCreationSchemaType) => {
       const { data } = await api.post<ApiResponse>("/api/game", gameOptions)
 
       return data
     },
   })
 
-  const form = useForm<FormSchemaType>({
+  const form = useForm<QuizCreationSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       topic: "",
@@ -40,7 +40,7 @@ const QuizCreationForm: FC = () => {
     },
   })
 
-  function onSubmit(gameOptions: FormSchemaType) {
+  function onSubmit(gameOptions: QuizCreationSchemaType) {
     try {
       getQuestions(gameOptions, {
         onSuccess: (res) => {
