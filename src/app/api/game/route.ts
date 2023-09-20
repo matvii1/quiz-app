@@ -9,7 +9,6 @@ import { MultipleChoiceQuestion, OpenQuestion } from "../types"
 export const POST = async (req: Request, res: Response) => {
   try {
     const session = await getAuthSession()
-    console.log("game")
 
     if (!session?.user) {
       return NextResponse.json(
@@ -109,13 +108,4 @@ export const POST = async (req: Request, res: Response) => {
       )
     }
   }
-}
-
-export const DELETE = async (req: Request, res: Response) => {
-  await prisma.game.deleteMany()
-  await prisma.question.deleteMany()
-
-  return NextResponse.json({
-    message: "hello",
-  })
 }

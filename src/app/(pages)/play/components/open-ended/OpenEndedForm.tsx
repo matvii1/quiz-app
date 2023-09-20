@@ -33,7 +33,7 @@ const OpenEndedForm: FC<OpenEndedFormProps> = ({
     if (ref.current) {
       ref.current.focus()
     }
-  }, [handleNext])
+  }, [])
 
   return (
     <Form {...form}>
