@@ -62,7 +62,7 @@ const DescDialog: FC = () => {
             <div className="border-b-[1px] pb-2">
               🚀 Dive into a world of endless trivia powered by cutting-edge AI!
               Our quiz app generates personalized questions, adapts to your
-              interests 🎯, and lets you compete globally. Click show more to
+              interests 🎯, and lets you compete globally. Create a quiz to
               uncover fascinating insights! 📚✨
             </div>
             <div className="mt-2 text-left">
