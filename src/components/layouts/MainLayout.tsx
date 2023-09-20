@@ -1,5 +1,11 @@
 import { FC, ReactNode } from "react"
-import { Navbar } from "../common"
+import { Navbar } from "@/components/common"
+import {
+  QueryProvider,
+  SessionProvider,
+  ThemeProvider,
+} from "@/components/providers"
+import { Toaster } from "@/components/ui/toaster"
 
 type MainLayoutProps = {
   children: ReactNode
@@ -8,9 +14,15 @@ type MainLayoutProps = {
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   return (
     <>
-      <Navbar />
-
-      <main className="flex-1">{children}</main>
+      <Toaster />
+      <SessionProvider>
+        <QueryProvider>
+          <ThemeProvider attribute="class" defaultTheme="default" enableSystem>
+            <Navbar />
+            {children}
+          </ThemeProvider>
+        </QueryProvider>
+      </SessionProvider>
     </>
   )
 }

@@ -11,7 +11,7 @@ import { z } from "zod"
 import { OpenEndedForm, OpenEndedQuiz } from "."
 import { GameHeader } from ".."
 import { useOpenEndedContext } from "../../providers"
-import { openEndedAsnswerSchema } from "../../schemas"
+import { openEndedAnswerSchema } from "../../schemas"
 import { EndGameSchemaType, OpenEndedAnswerSchemaType } from "../../types"
 import EndGame from "../EndGame"
 
@@ -52,7 +52,7 @@ const OpenEndedGame: FC = () => {
   })
 
   const form = useForm<OpenEndedAnswerSchemaType>({
-    resolver: zodResolver(openEndedAsnswerSchema),
+    resolver: zodResolver(openEndedAnswerSchema),
     defaultValues: {
       answer: "",
     },
@@ -65,7 +65,7 @@ const OpenEndedGame: FC = () => {
         questionId: currentQuestion.id,
       }
 
-      return api.post<{ precentageCorrect: number }>(
+      return api.post<{ percentageCorrect: number }>(
         "/api/checkAnswer",
         payload,
       )
@@ -119,10 +119,10 @@ const OpenEndedGame: FC = () => {
 
   function checkAnswersNext(values: OpenEndedAnswerSchemaType) {
     checkAnswer(values.answer, {
-      onSuccess: ({ data: { precentageCorrect } }) => {
+      onSuccess: ({ data: { percentageCorrect } }) => {
         toast({
           title: "Similarity",
-          description: `You got ${Math.round(precentageCorrect)}% correct`,
+          description: `You got ${Math.round(percentageCorrect)}% correct`,
         })
 
         resetTimer()

@@ -1,16 +1,41 @@
 import { Title } from "@/components/ui"
+import { prisma } from "@/lib/db"
 import { getAuthSession } from "@/lib/nextAuth"
 import { redirect } from "next/navigation"
 import { FC } from "react"
 import { Card, HotTopicsCard } from "./components"
 import { RecentActivity } from "./components/RecentActivity"
 
-const Dashborad: FC = async () => {
+const Dashboard: FC = async () => {
   const session = await getAuthSession()
 
   if (!session?.user) {
     return redirect("/")
   }
+
+  const recentGames = await prisma.game.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    orderBy: {
+      timeStarted: "desc",
+    },
+    take: 5,
+  })
+
+  const games = await prisma.game.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    orderBy: {
+      timeStarted: "desc",
+    },
+    take: 15,
+  })
+
+  const topics = games.map(
+    (game) => game.topic[0].toUpperCase() + game.topic.slice(1),
+  )
 
   return (
     <main className="container flex-1">
@@ -20,7 +45,7 @@ const Dashborad: FC = async () => {
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <Card
-          title="Quiz me!"
+          title="Create a Quiz!"
           description="Quiz me! is a quiz app that helps you learn by quizzing you on the
           things you want to learn."
           icon="brain"
@@ -35,11 +60,11 @@ const Dashborad: FC = async () => {
       </div>
 
       <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <HotTopicsCard />
-        <RecentActivity />
+        <HotTopicsCard topics={topics} />
+        <RecentActivity games={recentGames} />
       </div>
     </main>
   )
 }
 
-export default Dashborad
+export default Dashboard

@@ -3,7 +3,7 @@ import { FC } from "react"
 
 type MCQTableOptionsProps = {
   options: string[]
-  userAnswer: string
+  userAnswer: string | null
   answer: string
 }
 

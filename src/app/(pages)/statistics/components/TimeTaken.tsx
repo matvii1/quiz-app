@@ -2,7 +2,11 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui"
 import { Hourglass } from "lucide-react"
 import { FC } from "react"
 
-const TimeTaken: FC = () => {
+type TimeTakenProps = {
+  timeTaken: string
+}
+
+const TimeTaken: FC<TimeTakenProps> = ({ timeTaken }) => {
   return (
     <Card>
       <CardHeader>
@@ -10,7 +14,7 @@ const TimeTaken: FC = () => {
           <CardTitle className="text-xl font-bold">Time taken</CardTitle>
           <Hourglass size={22} strokeWidth={3} />
         </div>
-        <CardDescription>11m</CardDescription>
+        <CardDescription>{timeTaken}</CardDescription>
       </CardHeader>
     </Card>
   )

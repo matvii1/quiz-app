@@ -4,6 +4,7 @@ import { getAuthSession } from "@/lib/nextAuth"
 import { redirect } from "next/navigation"
 import { FC } from "react"
 import { MCQStatistics } from "../components/mcq"
+import { OpenEndedStatistics } from "../components/open-ended"
 
 type GameStatisticsProps = {
   params: {
@@ -42,11 +43,9 @@ const GameStatistics: FC<GameStatisticsProps> = async ({
     return <MCQStatistics game={game} />
   }
 
-  return (
-    <main className="container flex-1">
-      
-    </main>
-  )
+  if (game.gameType === "open_ended") {
+    return <OpenEndedStatistics game={game} />
+  }
 }
 
 export default GameStatistics

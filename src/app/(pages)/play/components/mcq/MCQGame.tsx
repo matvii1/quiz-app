@@ -9,7 +9,7 @@ import { z } from "zod"
 import { MCQuiz } from "."
 import { GameHeader } from ".."
 import { checkAnswerSchema } from "../../../quiz/schemas"
-import { useKeyboradNavigation } from "../../hooks"
+import { useKeyboardNavigation } from "../../hooks"
 import { useMSQContext } from "../../providers/mcq"
 import { EndGameSchemaType } from "../../types"
 import EndGame from "../EndGame"
@@ -34,21 +34,18 @@ const MCQGame: FC = () => {
     statistics,
   } = useMSQContext()
   const { mutate: checkAnswer, isLoading: isChecking } = useMutation({
-    mutationFn: () => {
+    mutationFn: (isTimeUp?: boolean) => {
       const payload: z.infer<typeof checkAnswerSchema> = {
         answer: options[selectedOptionIndex!],
         questionId: currentQuestion.id,
+        isTimeUp,
       }
 
       return api.post(`/api/checkAnswer`, payload)
     },
   })
 
-  const {
-    data,
-    mutate: endGame,
-    isLoading: isLoadingGameEnd,
-  } = useMutation({
+  const { mutate: endGame, isLoading: isLoadingGameEnd } = useMutation({
     mutationFn: async () => {
       const payload: EndGameSchemaType = {
         gameId: game.id,
@@ -69,7 +66,7 @@ const MCQGame: FC = () => {
     }
 
     if (timer > 0) {
-      checkAnswer(undefined, {
+      checkAnswer(false, {
         onSuccess: ({ data }) => {
           if (data.correct) {
             setStatistics((prev) => ({
@@ -100,21 +97,27 @@ const MCQGame: FC = () => {
     }
 
     if (timer === 0) {
-      setStatistics((prev) => ({
-        ...prev,
-        wrongCount: prev.wrongCount + 1,
-      }))
+      checkAnswer(true, {
+        onSuccess: ({ data }) => {
+          if (!data.correct) {
+            setStatistics((prev) => ({
+              ...prev,
+              wrongCount: prev.wrongCount + 1,
+            }))
+          }
 
-      resetTimer()
-      setSelectedOptionIndex(null)
+          resetTimer()
+          setSelectedOptionIndex(null)
 
-      if (isLastQuestion) {
-        setHasEnded(true)
+          if (isLastQuestion) {
+            setHasEnded(true)
 
-        return
-      }
+            return
+          }
 
-      next()
+          next()
+        },
+      })
     }
   }, [
     checkAnswer,
@@ -164,7 +167,7 @@ const MCQGame: FC = () => {
     })
   }, [setSelectedOptionIndex, options.length])
 
-  useKeyboradNavigation({
+  useKeyboardNavigation({
     next: handleSelectNextOption,
     prev: handleSelectPrevOption,
   })

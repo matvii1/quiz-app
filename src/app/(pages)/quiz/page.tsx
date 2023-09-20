@@ -1,13 +1,7 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui"
 import { getAuthSession } from "@/lib/nextAuth"
 import { redirect } from "next/navigation"
 import { FC } from "react"
+import { LoadingPage } from "../loading"
 import { QuizCreationForm } from "./components"
 
 export const metadata = {
@@ -24,15 +18,7 @@ const Quiz: FC = async () => {
 
   return (
     <main className="container flex flex-1 items-center justify-center">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl font-bold">Create a quiz</CardTitle>
-          <CardDescription>Choose a topic</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <QuizCreationForm />
-        </CardContent>
-      </Card>
+      <QuizCreationForm />
     </main>
   )
 }

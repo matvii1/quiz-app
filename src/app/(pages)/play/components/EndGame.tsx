@@ -2,7 +2,9 @@
 
 import { api } from "@/app/axios"
 import { buttonVariants } from "@/components/ui"
+import { getQuizTime } from "@/lib/getQuizTime"
 import { cn } from "@/lib/utils"
+import { Game } from "@prisma/client"
 import { BarChartBig, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { FC } from "react"
@@ -22,7 +24,7 @@ const EndGame: FC<EndGameProps> = ({ gameId }) => {
     queryFn: async () => {
       const { data } = await api.get(`/api/game/${gameId}`)
 
-      return data.game
+      return data.game as Game
     },
   })
 
@@ -30,9 +32,7 @@ const EndGame: FC<EndGameProps> = ({ gameId }) => {
     return <Loader2 className="h-6 w-6 animate-spin" />
   }
 
-  console.log(game, isError, game.timeEnded)
-
-  if (game.timeEnded == null || isError) {
+  if (game?.timeEnded == null || isError) {
     return (
       <p
         className={buttonVariants({
@@ -44,26 +44,12 @@ const EndGame: FC<EndGameProps> = ({ gameId }) => {
     )
   }
 
-  let message: string = ""
-  const time =
-    new Date(game.timeEnded)?.getTime() - new Date(game.timeStarted).getTime()
-
-  const hours = Math.floor(time / 1000 / 60 / 60)
-  const minutes = Math.floor(time / 1000 / 60) - hours * 60
-  const seconds = Math.floor(time / 1000) - hours * 60 * 60 - minutes * 60
-
-  if (hours) {
-    message += `${hours}h, `
-  }
-
-  if (minutes) {
-    message += `${minutes}m, and`
-  }
+  const messagePart = getQuizTime(game.timeStarted, game.timeEnded)
 
   return (
     <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col justify-center">
       <div className="mt-2 max-w-sm rounded-md bg-green-500 px-4 py-2 text-sm font-semibold text-white dark:bg-green-700">
-        {`You completed the game in ${message} ${seconds}s`}
+        {`You completed the game in ${messagePart}`}
       </div>
       <Link
         href={`/statistics/${gameId}`}

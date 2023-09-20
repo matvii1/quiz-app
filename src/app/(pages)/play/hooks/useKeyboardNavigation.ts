@@ -5,7 +5,7 @@ type Action = {
   prev: () => void
 }
 
-export function useKeyboradNavigation({ next, prev }: Action) {
+export function useKeyboardNavigation({ next, prev }: Action) {
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       switch (e.key) {

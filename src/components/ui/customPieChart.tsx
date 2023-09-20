@@ -3,19 +3,24 @@
 import { getPieColor } from "@/lib/getPieColors"
 import { animated, useSpring } from "@react-spring/web"
 import { useTheme } from "next-themes"
-import React, { FC, useState } from "react"
+import React, { FC } from "react"
 import { PieChart } from "react-minimal-pie-chart"
 
-export const CustomPieChart: FC = () => {
+type CustomPieChartProps = {
+  percentageCorrect: number
+}
+
+export const CustomPieChart: FC<CustomPieChartProps> = ({
+  percentageCorrect,
+}) => {
   const { theme } = useTheme()
   const isDark = theme === "dark"
 
-  const [valueCorrect, setValueCorrect] = useState(75)
-  const valueIncorrect = 100 - valueCorrect
+  const valueIncorrect = 100 - percentageCorrect
 
   const [props, api] = useSpring(() => ({
     from: { number: 0 },
-    number: valueCorrect,
+    number: percentageCorrect,
     delay: 200,
     config: {
       tension: 30,
@@ -28,8 +33,8 @@ export const CustomPieChart: FC = () => {
   const pieData = [
     {
       title: "Correct",
-      value: valueCorrect,
-      color: getPieColor(valueCorrect, isDark),
+      value: percentageCorrect,
+      color: getPieColor(percentageCorrect, isDark),
     },
     { title: "Incorrect", value: valueIncorrect, color: "transparent" },
   ]
@@ -37,21 +42,8 @@ export const CustomPieChart: FC = () => {
   function handleClick() {}
   return (
     <div className="relative">
-      {/* TODO: this is for dev. remove later */}
-      {/* <Slider
-        defaultValue={[valueCorrect]}
-        className='mb-4'
-        max={100}
-        step={1}
-        onValueChange={(e) => {
-          setValueCorrect(e[0])
-          api.start({
-            number: e[0],
-          })
-        }}
-      /> */}
       <PieChart
-        rounded={valueCorrect > 3 ? true : false}
+        rounded={percentageCorrect > 3 ? true : false}
         animate={true}
         startAngle={270}
         data={pieData}

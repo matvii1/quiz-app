@@ -1,3 +1,3 @@
-export * from './Header'
-export * from './Results'
-export * from './TimeTaken'
+export * from "./TimeTaken"
+export * from "./Tooltip"
+export * from "./mcq/MCQResults"

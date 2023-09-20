@@ -23,7 +23,6 @@ export const useMSQContext = () => useContext(MSQContext)
 
 const MCQuizProvider: FC<MCQuizProviderProps> = ({ children, game }) => {
   const questionsLength = game.questions.length
-  // TODO: add useeffect that sets has Ended to true
 
   const [statistics, setStatistics] = useState<StatisticType>({
     wrongCount: 0,
@@ -80,7 +79,7 @@ const MCQuizProvider: FC<MCQuizProviderProps> = ({ children, game }) => {
     setHasEnded,
     hasEnded,
     isLastQuestion,
-    stopTimer
+    stopTimer,
   }
 
   return <MSQContext.Provider value={value}>{children}</MSQContext.Provider>

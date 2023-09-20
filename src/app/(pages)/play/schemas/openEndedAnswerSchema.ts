@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const openEndedAsnswerSchema = z.object({
+export const openEndedAnswerSchema = z.object({
   answer: z
     .string()
     .min(5, {

@@ -8,7 +8,11 @@ export const POST = async (req: Request, res: Response) => {
   try {
     const body = await req.json()
 
-    const { questionId, answer } = checkAnswerSchema.parse(body)
+    const {
+      questionId,
+      answer,
+      isTimeUp = false,
+    } = checkAnswerSchema.parse(body)
 
     const question = await prisma.question.findUnique({
       where: {
@@ -32,13 +36,33 @@ export const POST = async (req: Request, res: Response) => {
         id: questionId,
       },
       data: {
-        userAnswer: answer,
+        userAnswer: isTimeUp ? null : answer,
       },
     })
 
     if (question?.questionType === "multiple_choice") {
       const isCorrect =
         question.answer.toLowerCase().trim() === answer.toLowerCase().trim()
+
+      if (isTimeUp) {
+        await prisma.question.update({
+          where: {
+            id: questionId,
+          },
+          data: {
+            isCorrect: false,
+          },
+        })
+
+        return NextResponse.json(
+          {
+            correct: false,
+          },
+          {
+            status: 200,
+          },
+        )
+      }
 
       if (isCorrect) {
         await prisma.question.update({
@@ -82,7 +106,7 @@ export const POST = async (req: Request, res: Response) => {
     }
 
     if (question.questionType === "open_ended") {
-      const similarityPrecentage =
+      const similarityPercentage =
         compareTwoStrings(
           answer.toLowerCase().trim(),
           question.answer.toLowerCase().trim(),
@@ -93,12 +117,12 @@ export const POST = async (req: Request, res: Response) => {
           id: questionId,
         },
         data: {
-          precentageCorrect: similarityPrecentage,
+          percentageCorrect: similarityPercentage,
         },
       })
 
       return NextResponse.json({
-        precentageCorrect: similarityPrecentage,
+        percentageCorrect: similarityPercentage,
       })
     }
 
@@ -116,14 +140,14 @@ export const POST = async (req: Request, res: Response) => {
         errors: error.issues,
       })
     }
-  }
 
-  return NextResponse.json(
-    {
-      error: "Somwthing went wrong",
-    },
-    {
-      status: 500,
-    },
-  )
+    return NextResponse.json(
+      {
+        error: error,
+      },
+      {
+        status: 500,
+      },
+    )
+  }
 }

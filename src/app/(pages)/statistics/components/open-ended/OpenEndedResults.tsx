@@ -7,10 +7,21 @@ import {
   CardTitle,
   CustomPieChart,
 } from "@/components/ui"
+import { getResultMessage } from "@/lib/getResultMessage"
 import { PieChart } from "lucide-react"
 import { FC } from "react"
 
-const Results: FC = () => {
+type OpenEndedResultsProps = {
+  percentagesOfGame: number
+  gameLength: number
+}
+
+const OpenEndedResults: FC<OpenEndedResultsProps> = ({
+  percentagesOfGame,
+  gameLength,
+}) => {
+  const message = getResultMessage(percentagesOfGame)
+
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between">
@@ -19,16 +30,17 @@ const Results: FC = () => {
       </CardHeader>
       <CardContent className="flex items-center justify-center">
         <div className="max-w-[200px]">
-          <CustomPieChart />
+          <CustomPieChart percentageCorrect={percentagesOfGame} />
         </div>
       </CardContent>
       <CardFooter className="justify-center">
-        <CardDescription>
-          Nice try! You got 5 out of 10 questions correct.
+        <CardDescription className="sm:px-14">
+          {message} You got a total of {percentagesOfGame}% correct out of{" "}
+          {gameLength} questions.
         </CardDescription>
       </CardFooter>
     </Card>
   )
 }
 
-export { Results }
+export { OpenEndedResults }

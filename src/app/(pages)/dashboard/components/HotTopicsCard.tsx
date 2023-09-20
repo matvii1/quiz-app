@@ -8,15 +8,30 @@ import {
 } from "@/components/ui"
 import { FC } from "react"
 
-const HotTopicsCard: FC = () => {
+type HotTopicsCardProps = {
+  topics: string[]
+}
+
+const HotTopicsCard: FC<HotTopicsCardProps> = ({ topics }) => {
+  const wordCloudData = topics.map((topic) => ({
+    text: topic,
+    value: Math.round(Math.random() * 20),
+  }))
+
   return (
     <Card className="col-span-4">
       <CardHeader>
         <CardTitle className="text-xl font-bold">Hot topics</CardTitle>
-        <CardDescription>Click on the topic to start the quiz!</CardDescription>
+        <CardDescription>
+          See what quizzes other people are taking!
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <WordCloud />
+        {wordCloudData.length ? (
+          <WordCloud data={wordCloudData} />
+        ) : (
+          <p className="text-center text-muted-foreground">No topics yet.</p>
+        )}
       </CardContent>
     </Card>
   )

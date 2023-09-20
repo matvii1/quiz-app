@@ -4,10 +4,14 @@ import { LayoutDashboard } from "lucide-react"
 import Link from "next/link"
 import { FC } from "react"
 
-const Header: FC = () => {
+type PageHeaderProps = {
+  title: string
+}
+
+const PageHeader: FC<PageHeaderProps> = ({ title }) => {
   return (
     <header className="mt-6 flex items-center justify-between">
-      <h1 className="text-2xl font-bold">Summary</h1>
+      <h1 className="text-2xl font-bold">{title}</h1>
       <Link
         href="/dashboard"
         className={cn(
@@ -22,4 +26,4 @@ const Header: FC = () => {
   )
 }
 
-export { Header }
+export { PageHeader }

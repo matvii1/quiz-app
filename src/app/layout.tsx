@@ -1,14 +1,8 @@
-import { Navbar } from "@/components/common"
-import {
-  QueryProvider,
-  SessionProvider,
-  ThemeProvider,
-} from "@/components/providers"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { cn } from "../lib/utils"
 import "./global.css"
-import { Toaster } from "@/components/ui/toaster"
+import { MainLayout } from "@/components/layouts"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -31,19 +25,7 @@ export default function RootLayout({
         )}
         id="body"
       >
-        <Toaster />
-        <SessionProvider>
-          <QueryProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="default"
-              enableSystem
-            >
-              <Navbar />
-              {children}
-            </ThemeProvider>
-          </QueryProvider>
-        </SessionProvider>
+        <MainLayout>{children}</MainLayout>
       </body>
     </html>
   )

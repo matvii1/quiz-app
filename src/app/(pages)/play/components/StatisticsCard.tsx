@@ -23,7 +23,7 @@ const StatisticsCard: FC<StatisticsCardProps> = ({ statistics }) => {
 
         <Separator orientation="vertical" className="h-5" />
 
-        <div className="flex items-center gap-2 text-destructive">
+        <div className="flex items-center gap-2 text-red-400 dark:text-red-500">
           <XCircle />
           <p>{statistics.wrongCount}</p>
         </div>

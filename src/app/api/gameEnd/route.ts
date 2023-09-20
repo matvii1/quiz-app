@@ -8,8 +8,6 @@ export const POST = async (req: Request, res: Response) => {
     const body = await req.json()
     const { gameId } = endGameSchema.parse(body)
 
-    console.log(gameId)
-
     const game = await prisma.game.update({
       where: {
         id: gameId,

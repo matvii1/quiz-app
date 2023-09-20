@@ -9,7 +9,7 @@ import {
   Textarea,
 } from "@/components/ui"
 import { ChevronRight, Loader2 } from "lucide-react"
-import { FC } from "react"
+import { FC, useEffect, useRef } from "react"
 import { OpenEndedAnswerSchemaType, OpenEndedForm } from "../../types"
 
 type OpenEndedFormProps = {
@@ -27,6 +27,14 @@ const OpenEndedForm: FC<OpenEndedFormProps> = ({
   handleNext,
   isLoadingGameEnd,
 }) => {
+  const ref = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.focus()
+    }
+  }, [handleNext])
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleNext)}>
@@ -37,7 +45,11 @@ const OpenEndedForm: FC<OpenEndedFormProps> = ({
             <FormItem>
               <FormLabel className="mt-4 text-xl">Enter your answer</FormLabel>
               <FormControl>
-                <Textarea {...field} placeholder="Enter your answer here..." />
+                <Textarea
+                  {...field}
+                  ref={ref}
+                  placeholder="Enter your answer here..."
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

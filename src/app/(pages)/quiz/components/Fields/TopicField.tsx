@@ -24,7 +24,7 @@ const TopicField: FC<TopicFieldProps> = ({ form }) => {
           <FormLabel>Topic</FormLabel>
           <FormControl>
             <Input
-              placeholder="Eruopeam history..."
+              placeholder="European history..."
               {...field}
               autoComplete="off"
             />
