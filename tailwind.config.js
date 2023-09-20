@@ -60,7 +60,7 @@ module.exports = {
         },
       },
       gridTemplateColumns: {
-        fluid: "repeat(auto-fit, minmax(18rem, 1fr))",
+        fluid: "repeat(auto-fit, minmax(100px, 1fr))",
       },
       borderRadius: {
         lg: "var(--radius)",

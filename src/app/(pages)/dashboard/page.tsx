@@ -1,9 +1,9 @@
-import { Title } from "@/components/ui"
+import { Badge, Dialog, Title } from "@/components/ui"
 import { prisma } from "@/lib/db"
 import { getAuthSession } from "@/lib/nextAuth"
 import { redirect } from "next/navigation"
 import { FC } from "react"
-import { Card, HotTopicsCard } from "./components"
+import { Card, DescDialog, HotTopicsCard } from "./components"
 import { RecentActivity } from "./components/RecentActivity"
 
 const Dashboard: FC = async () => {
@@ -37,6 +37,7 @@ const Dashboard: FC = async () => {
     <main className="container flex-1">
       <div className="flex items-center gap-3">
         <Title className="mt-6">Dashboard</Title>
+        <DescDialog />
       </div>
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
