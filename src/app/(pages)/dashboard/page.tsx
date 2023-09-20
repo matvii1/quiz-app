@@ -1,7 +1,6 @@
-import { Badge, Dialog, Title } from "@/components/ui"
+import { Title } from "@/components/ui"
 import { prisma } from "@/lib/db"
 import { getAuthSession } from "@/lib/nextAuth"
-import { redirect } from "next/navigation"
 import { FC } from "react"
 import { Card, DescDialog, HotTopicsCard } from "./components"
 import { RecentActivity } from "./components/RecentActivity"

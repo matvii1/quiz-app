@@ -6,7 +6,10 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "es-lint": "npx tsc --noEmit && npx eslint . --ignore-path .eslintignore --fix",
+    "format": "npx prettier . --ignore-path .gitignore --write",
+    "fix-style": "npm run es-lint && npm run format"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",

@@ -10,9 +10,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui"
-import { Github, Send, User2 } from "lucide-react"
+import { Github, Send } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 
 const DescDialog: FC = () => {
   return (

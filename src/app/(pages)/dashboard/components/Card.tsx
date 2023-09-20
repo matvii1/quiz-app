@@ -32,10 +32,12 @@ const Card: FC<CardProps> = ({ title, description, icon, navigateTo }) => {
   return (
     <UiCard
       onClick={handleClick}
-      className="group cursor-pointer transition-opacity hover:opacity-75 dark:hover:opacity-[unset] group"
+      className="group group cursor-pointer transition-opacity hover:opacity-75 dark:hover:opacity-[unset]"
     >
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-xl font-bold group-hover:underline underline-offset-2">{title}</CardTitle>
+        <CardTitle className="text-xl font-bold underline-offset-2 group-hover:underline">
+          {title}
+        </CardTitle>
         {ICONS[icon]}
       </CardHeader>
       <CardContent>
