@@ -1,4 +1,4 @@
 import { z } from "zod"
-import { openEndedAsnswerSchema } from "../schemas"
+import { openEndedAnswerSchema } from "../schemas"
 
-export type OpenEndedAnswerSchemaType = z.infer<typeof openEndedAsnswerSchema>
+export type OpenEndedAnswerSchemaType = z.infer<typeof openEndedAnswerSchema>
