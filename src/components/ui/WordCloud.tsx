@@ -29,7 +29,6 @@ const WordCloud: FC<WordClodProps> = ({ data }) => {
       fill={theme === "dark" ? "#fff" : "#000"}
       font="Times"
       onWordClick={(_, word) => {
-        console.log("he;;p")
         return router.push(`/quiz?topic=${word.text}`)
       }}
       random={Math.random}

@@ -33,9 +33,9 @@ const Dashboard: FC = async () => {
     take: 15,
   })
 
-  const topics = games.map(
-    (game) => game.topic[0].toUpperCase() + game.topic.slice(1),
-  )
+  const topicsArr = games.map((game) => game.topic.toLowerCase())
+
+  const topics = [...new Set(topicsArr)]
 
   return (
     <main className="container flex-1">

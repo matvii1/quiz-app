@@ -9,6 +9,7 @@ import { MultipleChoiceQuestion, OpenQuestion } from "../types"
 export const POST = async (req: Request, res: Response) => {
   try {
     const session = await getAuthSession()
+    console.log("game")
 
     if (!session?.user) {
       return NextResponse.json(
@@ -33,7 +34,7 @@ export const POST = async (req: Request, res: Response) => {
       },
     })
 
-    const { data: response } = await api.post("/questions", {
+    const { data: response } = await api.post("api/questions", {
       topic,
       amount,
       type,

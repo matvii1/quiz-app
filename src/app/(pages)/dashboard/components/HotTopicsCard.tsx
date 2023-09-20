@@ -14,7 +14,7 @@ type HotTopicsCardProps = {
 
 const HotTopicsCard: FC<HotTopicsCardProps> = ({ topics }) => {
   const wordCloudData = topics.map((topic) => ({
-    text: topic,
+    text: topic[0].toUpperCase() + topic.slice(1),
     value: Math.round(Math.random() * 20),
   }))
 

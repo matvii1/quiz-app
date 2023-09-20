@@ -19,7 +19,7 @@ const OptionCard: FC<OptionCardProps> = ({ option, index }) => {
       >
         <div className="flex flex-row items-center gap-4">
           <div className="rounded-md border p-4 py-2">{index + 1}</div>
-          <p>{option}</p>
+          <p className='text-left'>{option}</p>
         </div>
       </Button>
     </li>

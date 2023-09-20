@@ -54,8 +54,12 @@ const QuizCreationForm: FC = () => {
   function onSubmit(gameOptions: QuizCreationSchemaType) {
     try {
       setShowLoading(true)
+      const normalizedOptions = {
+        ...gameOptions,
+        topic: gameOptions.topic.toLowerCase().trim(),
+      }
 
-      getQuestions(gameOptions, {
+      getQuestions(normalizedOptions, {
         onSuccess: (res) => {
           const type = form.getValues("type")
           setIsSuccess(true)

@@ -61,7 +61,7 @@ const OpenEndedGame: FC = () => {
   const { mutate: checkAnswer, isLoading: isChecking } = useMutation({
     mutationFn: async (answer: string) => {
       const payload: z.infer<typeof checkAnswerSchema> = {
-        answer: answer,
+        answer: answer.trim().toLowerCase(),
         questionId: currentQuestion.id,
       }
 
