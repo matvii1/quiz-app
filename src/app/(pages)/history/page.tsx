@@ -11,13 +11,9 @@ import { Card, CardContent } from "@/components/ui"
 const History: FC = async () => {
   const session = await getAuthSession()
 
-  if (!session?.user) {
-    return redirect("/")
-  }
-
   const historyGames = await prisma.game.findMany({
     where: {
-      userId: session.user.id,
+      userId: session!.user.id,
     },
     orderBy: {
       timeStarted: "desc",

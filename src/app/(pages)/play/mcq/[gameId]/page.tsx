@@ -3,7 +3,7 @@ import { getAuthSession } from "@/lib/nextAuth"
 import { redirect } from "next/navigation"
 import { FC } from "react"
 import { MCQuizProvider } from "../../providers/mcq"
-import { MCQGame } from '../../components/mcq'
+import { MCQGame } from "../../components/mcq"
 
 type MCQPageProps = {
   params: {
@@ -12,12 +12,6 @@ type MCQPageProps = {
 }
 
 const MCQPage: FC<MCQPageProps> = async ({ params: { gameId } }) => {
-  const session = await getAuthSession()
-
-  if (!session?.user) {
-    return redirect("/")
-  }
-
   const game = await prisma.game.findUnique({
     where: { id: gameId },
     include: {

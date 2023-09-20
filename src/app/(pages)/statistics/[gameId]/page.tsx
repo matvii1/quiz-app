@@ -15,12 +15,6 @@ type GameStatisticsProps = {
 const GameStatistics: FC<GameStatisticsProps> = async ({
   params: { gameId },
 }) => {
-  const session = await getAuthSession()
-
-  if (!session?.user) {
-    return redirect("/")
-  }
-
   const game = await prisma.game.findUnique({
     where: {
       id: gameId,

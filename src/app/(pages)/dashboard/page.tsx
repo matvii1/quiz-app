@@ -9,13 +9,9 @@ import { RecentActivity } from "./components/RecentActivity"
 const Dashboard: FC = async () => {
   const session = await getAuthSession()
 
-  if (!session?.user) {
-    return redirect("/")
-  }
-
   const recentGames = await prisma.game.findMany({
     where: {
-      userId: session.user.id,
+      userId: session!.user.id,
     },
     orderBy: {
       timeStarted: "desc",
@@ -25,7 +21,7 @@ const Dashboard: FC = async () => {
 
   const games = await prisma.game.findMany({
     where: {
-      userId: session.user.id,
+      userId: session!.user.id,
     },
     orderBy: {
       timeStarted: "desc",

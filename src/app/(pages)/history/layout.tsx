@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/common"
+import { ProtectedPageLayout } from "@/components/layouts"
 import { FC, ReactNode } from "react"
 
 type HistoryLayoutProps = {
@@ -7,11 +8,13 @@ type HistoryLayoutProps = {
 
 const HistoryLayout: FC<HistoryLayoutProps> = ({ children }) => {
   return (
-    <main className="container flex-1">
-      <PageHeader title="History" />
+    <ProtectedPageLayout>
+      <main className="container flex-1">
+        <PageHeader title="History" />
 
-      {children}
-    </main>
+        {children}
+      </main>
+    </ProtectedPageLayout>
   )
 }
 
