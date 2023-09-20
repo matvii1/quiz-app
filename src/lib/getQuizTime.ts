@@ -18,5 +18,5 @@ export function getQuizTime(timeStarted: Date, timeEnded: Date) {
     message += ` ${seconds}s`
   }
 
-	return message
+  return message
 }

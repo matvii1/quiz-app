@@ -1,5 +1,5 @@
 import { Game, Question } from "@prisma/client"
-import { StatisticType } from '..'
+import { StatisticType } from ".."
 
 export type OpenEndedContextType = {
   game: PickedOpenEndedGame
@@ -15,7 +15,7 @@ export type OpenEndedContextType = {
   hasEnded: boolean
   isLastQuestion: boolean
   statistics: StatisticType
-  setStatistics: React.Dispatch<React.SetStateAction<StatisticType>>,
+  setStatistics: React.Dispatch<React.SetStateAction<StatisticType>>
   stopTimer: () => void
 }
 

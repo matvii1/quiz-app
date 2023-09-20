@@ -1,7 +1,4 @@
-import { getAuthSession } from "@/lib/nextAuth"
-import { redirect } from "next/navigation"
 import { FC } from "react"
-import { LoadingPage } from "../loading"
 import { QuizCreationForm } from "./components"
 
 export const metadata = {

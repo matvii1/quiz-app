@@ -1,8 +1,6 @@
 import { useState } from "react"
 
-export function useQuestion(
-  questionLength: number,
-) {
+export function useQuestion(questionLength: number) {
   const [questionIndex, setQuestionIndex] = useState(0)
 
   function next() {

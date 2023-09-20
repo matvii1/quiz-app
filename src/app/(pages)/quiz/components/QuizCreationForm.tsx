@@ -19,8 +19,8 @@ import { useForm } from "react-hook-form"
 import { useMutation } from "react-query"
 import { LoadingPage } from "../../loading"
 import { formSchema } from "../schemas"
-import { AmountField, ControlsField, TopicField } from "./Fields"
 import { QuizCreationSchemaType } from "../types"
+import { AmountField, ControlsField, TopicField } from "./Fields"
 
 type ApiResponse = {
   gameId: string

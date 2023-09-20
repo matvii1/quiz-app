@@ -1,7 +1,7 @@
+import { cn } from "@/lib/utils"
 import { Game } from "@prisma/client"
 import { FC, HTMLAttributes } from "react"
 import { RecentActivityItem } from "."
-import { cn } from "@/lib/utils"
 
 type RecentActivityListProps = {
   games: Game[]

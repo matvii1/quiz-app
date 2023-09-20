@@ -62,7 +62,7 @@ const OpenEndedProvider: FC<OpenEndedProviderProps> = ({ children, game }) => {
     isLastQuestion,
     statistics,
     setStatistics,
-    stopTimer
+    stopTimer,
   }
 
   return (

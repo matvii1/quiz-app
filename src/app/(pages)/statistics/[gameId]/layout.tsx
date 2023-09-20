@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/common"
-import { ProtectedPageLayout } from '@/components/layouts'
+import { ProtectedPageLayout } from "@/components/layouts"
 import { FC, ReactNode } from "react"
 
 type StatisticsLayoutProps = {

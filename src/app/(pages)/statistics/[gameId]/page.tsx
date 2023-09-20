@@ -1,6 +1,5 @@
 import { GameNotFound } from "@/app/(pages)/gameNotFound"
 import { prisma } from "@/lib/db"
-import { getAuthSession } from "@/lib/nextAuth"
 import { redirect } from "next/navigation"
 import { FC } from "react"
 import { MCQStatistics } from "../components/mcq"

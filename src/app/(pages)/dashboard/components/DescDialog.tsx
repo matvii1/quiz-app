@@ -1,6 +1,6 @@
 "use client"
 
-import { FC } from "react"
+import { Badge } from "@/components/ui"
 import {
   Dialog,
   DialogContent,
@@ -9,9 +9,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Badge } from "@/components/ui"
 import { Github, Send } from "lucide-react"
 import Link from "next/link"
+import { FC } from "react"
+
+const buildWith = [
+  "Next.js",
+  "Prisma",
+  "Planet Scale",
+  "React Query",
+  "Tailwind",
+  "Open AI",
+  "NextAuth",
+  "Typescript",
+]
 
 const DescDialog: FC = () => {
   return (
@@ -57,30 +68,11 @@ const DescDialog: FC = () => {
             <div className="mt-2 text-left">
               <h4 className="font-bold">Build with:</h4>
               <ul className="mt-2 grid list-none grid-cols-2 gap-2 font-bold sm:grid-cols-4">
-                <li className="flex items-center">
-                  <p>Next.js</p>
-                </li>
-                <li className="flex items-center">
-                  <p>Prisma</p>
-                </li>
-                <li className="flex items-center">
-                  <p>Planet Scale</p>
-                </li>
-                <li className="flex items-center">
-                  <p>React Query</p>
-                </li>
-                <li className="flex items-center">
-                  <p>Tailwind</p>
-                </li>
-                <li className="flex items-center">
-                  <p>Open AI</p>
-                </li>
-                <li className="flex items-center">
-                  <p>NextAuth</p>
-                </li>
-                <li className="flex items-center">
-                  <p>Typescript</p>
-                </li>
+                {buildWith.map((item) => (
+                  <li key={item} className="flex items-center">
+                    <p>{item}</p>
+                  </li>
+                ))}
               </ul>
             </div>
           </DialogDescription>

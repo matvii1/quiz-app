@@ -31,4 +31,3 @@ export type MSQContextType = {
 export type PickedMCQGame = Game & {
   questions: Pick<Question, "id" | "question" | "options">[]
 }
-

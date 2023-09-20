@@ -1,5 +1,5 @@
-'use client'
+"use client"
 
-export * from './MCQGame'
-export * from './MCQuiz'
-export * from './OptionCard'
+export * from "./MCQGame"
+export * from "./MCQuiz"
+export * from "./OptionCard"

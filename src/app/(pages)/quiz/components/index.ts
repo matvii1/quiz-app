@@ -1,1 +1,1 @@
-export * from './QuizCreationForm'
+export * from "./QuizCreationForm"

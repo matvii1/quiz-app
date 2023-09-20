@@ -1,2 +1,1 @@
-
-export * from './LoadingPage'
+export * from "./LoadingPage"

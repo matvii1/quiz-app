@@ -22,7 +22,7 @@ const OpenEndedQuestionsTable: FC<OpenEndedQuestionsTableProps> = ({
   return (
     <Card className="mt-6">
       <CardContent>
-        <Table className='min-w-[630px]'>
+        <Table className="min-w-[630px]">
           <TableCaption className="mt-1">Questions and answers.</TableCaption>
           <TableHeader>
             <TableRow>
@@ -30,7 +30,7 @@ const OpenEndedQuestionsTable: FC<OpenEndedQuestionsTableProps> = ({
                 <Hash className="h-4 w-4" />
               </TableHead>
               <TableHead>Questions</TableHead>
-              <TableHead className='min-w-[120px] pr-4'>Your answer</TableHead>
+              <TableHead className="min-w-[120px] pr-4">Your answer</TableHead>
               <TableHead className="-translate-x-3">Similarity</TableHead>
             </TableRow>
           </TableHeader>
