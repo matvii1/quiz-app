@@ -8,7 +8,7 @@ const Navbar: FC = async () => {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-10 h-fit border bg-background py-4">
+      <header className="inset-x-0 top-0 z-10 h-fit border bg-background py-4">
         <div className="container flex h-full items-center justify-between">
           <Logo />
 
@@ -23,7 +23,6 @@ const Navbar: FC = async () => {
           </div>
         </div>
       </header>
-      <div className="pt-[5.6rem]"></div>
     </>
   )
 }
