@@ -3,7 +3,7 @@
 import { fontSizeMapper } from "@/lib/fontSizeMapper"
 import { useTheme } from "next-themes"
 import dynamic from "next/dynamic"
-import { redirect, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { FC } from "react"
 
 const D3WordCloud = dynamic(() => import("react-d3-cloud"), { ssr: false })
@@ -30,6 +30,12 @@ const WordCloud: FC<WordClodProps> = ({ data }) => {
       font="Times"
       onWordClick={(_, word) => {
         return router.push(`/quiz?topic=${word.text}`)
+      }}
+      onWordMouseOver={(_, word) => {
+        return (document.body.style.cursor = "pointer")
+      }}
+      onWordMouseOut={(_, word) => {
+        return (document.body.style.cursor = "default")
       }}
       random={Math.random}
       spiral="archimedean"
