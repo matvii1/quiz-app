@@ -30,6 +30,7 @@ const AmountField: FC<AmountFieldProps> = ({ form }) => {
           <FormControl>
             <Input
               type="number"
+              min={1}
               placeholder="Enter an amount..."
               {...field}
               onChange={onChange}
