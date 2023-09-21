@@ -23,10 +23,10 @@ const HotTopicsCard: FC<HotTopicsCardProps> = ({ topics }) => {
       <CardHeader>
         <CardTitle className="text-xl font-bold">Hot topics</CardTitle>
         <CardDescription>
-          <p>See what quizzes other people are taking!</p>
-          <p className="text-muted-foreground">
+          <span>See what quizzes other people are taking!</span>
+          <span className="text-muted-foreground block">
             Click on the topic to start the quiz
-          </p>
+          </span>
         </CardDescription>
       </CardHeader>
       <CardContent>

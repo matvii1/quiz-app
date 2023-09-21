@@ -24,20 +24,24 @@ export const POST = async (req: Request, res: Response) => {
     const body = await req.json()
     const { topic, amount, type } = formSchema.parse(body)
 
-    const game = await prisma.game.create({
-      data: {
-        timeStarted: new Date(),
+    const data = await Promise.all([
+      prisma.game.create({
+        data: {
+          timeStarted: new Date(),
+          topic,
+          gameType: type,
+          userId: session.user.id,
+        },
+      }),
+      api.post("api/questions", {
         topic,
-        gameType: type,
-        userId: session.user.id,
-      },
-    })
+        amount,
+        type,
+      }),
+    ])
 
-    const { data: response } = await api.post("api/questions", {
-      topic,
-      amount,
-      type,
-    })
+    const game = data[0]
+    const response = data[1].data
 
     if (!response || !response.questions || response.questions.length === 0) {
       return NextResponse.json(

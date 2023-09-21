@@ -1,6 +1,5 @@
 import { formSchema } from "@/app/(pages)/quiz/schemas"
 import { strict_output } from "@/lib/gpt"
-import { getAuthSession } from "@/lib/nextAuth"
 import { NextResponse } from "next/server"
 import { ZodError } from "zod"
 
